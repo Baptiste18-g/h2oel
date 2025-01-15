@@ -9,12 +9,14 @@ h1 {
   font-weight: bold;
   margin-bottom: 1rem;
   margin-top: 3rem;
-  color: #e7e7e7;
+  color: #ffffff;
   text-align: center;
+  text-shadow: #d1d1d1 10px;
 }
 h2 {
-  color: #e7e7e7;
+  color: #ffffff;
   font-weight: bold;
+  text-shadow: #d1d1d1;
 }
 img {
   width: 5rem;
