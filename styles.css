@@ -9,6 +9,10 @@ h1 {
   font-weight: bold;
   margin-bottom: 1rem;
   margin-top: 3rem;
-  color: #FFFFFF;
+  color: #e7e7e7;
   text-align: center;
+}
+h2 {
+  color: #e7e7e7;
+  font-weight: bold;
 }
