@@ -1,6 +1,6 @@
 body {
     height: 100vh; /* Assure que le fond couvre toute la hauteur de la fenêtre */
     margin: 0; /* Supprime les marges par défaut du body */
-    background: linear-gradient(to bottom right, #FFFFFF, #0000FF, #00FF00);
+    background: linear-gradient(to bottom right, #FFFFFF, #00d9ff, #00FF00);
   }
   
