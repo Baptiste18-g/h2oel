@@ -20,6 +20,47 @@
 
     </div>
     <h2>Trains</h2>
+    <!-- Import de Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // Scène, caméra et rendu
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Création d'un cube 3D
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        // Positionner la caméra
+        camera.position.z = 5;
+
+        // Fonction d'animation
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotation du cube
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+
+            // Rendu de la scène
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Adapter le rendu à la taille de la fenêtre
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+    </script>
     <footer>
         
     </footer>
