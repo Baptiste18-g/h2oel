@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script src="https://kit.fontawesome.com/3979d6d647.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <header>
@@ -20,54 +21,48 @@
 
     </div>
     <h2>Trains</h2>
-    <!-- Import de Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Import des contrôles OrbitControls.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
-
     <script>
         // Scène, caméra et rendu
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });  // alpha: true pour un fond transparent
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
-        renderer.setClearColor(0x000000, 0); // Arrière-plan transparent
-
-        // Création d'un cube 3D
+        
+        // Création d'un cube
         const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
         const cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
-
-        // Positionner la caméra
+      
+        // Positionnement de la caméra
         camera.position.z = 5;
-
-        // Ajouter les contrôles OrbitControls pour interagir avec la souris
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = true;  // Activer le zoom avec la molette
-        controls.enableDamping = true;  // Activer l'inertie
-        controls.dampingFactor = 0.25;  // Facteur de l'inertie
-        controls.screenSpacePanning = false;  // Désactiver le pan horizontal/vertical de la caméra
-
-        // Fonction d'animation
+      
+        // Contrôles de la souris pour la rotation
+        let mouseX = 0;
+        let mouseY = 0;
+        const mouseSpeed = 0.05;
+      
+        document.addEventListener('mousemove', (event) => {
+          mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+      
+        // Animation
         function animate() {
-            requestAnimationFrame(animate);
-
-            // Mettre à jour les contrôles (nécessaire pour l'inertie)
-            controls.update();
-
-            // Rendu de la scène
-            renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+          cube.rotation.x += mouseY * mouseSpeed;
+          cube.rotation.y += mouseX * mouseSpeed;
+          renderer.render(scene, camera);
         }
-
+      
         animate();
-
-        // Adapter le rendu à la taille de la fenêtre
+      
+        // Adapter la taille du rendu si la fenêtre est redimensionnée
         window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
     <footer>
