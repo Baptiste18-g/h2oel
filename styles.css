@@ -10,16 +10,17 @@ h1 {
   font-weight: bold;
   margin-bottom: 1rem;
   margin-top: 3rem;
-  background: linear-gradient(to bottom right, #00d9ff, #00d9ff 25%, #00FF00);
+  background: linear-gradient(to bottom right, #00d9ff, #00d9ff 15%, #00FF00);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-align: center;
 }
 h2 {
-  background: linear-gradient(to bottom right, #00d9ff, #00d9ff 25%, #00FF00);
+  background: linear-gradient(to bottom right, #00d9ff, #00d9ff 15%, #00FF00);
   -webkit-background-clip: text;
   background-clip: text;
+  color: transparent;
   font-weight: bold;
   font-size: 2em;
   padding: 2em;
