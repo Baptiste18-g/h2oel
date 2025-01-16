@@ -27,8 +27,9 @@
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);  // Fond transparent
         document.body.appendChild(renderer.domElement);
-        
+      
         // Création d'un cube
         const geometry = new THREE.BoxGeometry();
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
@@ -38,21 +39,43 @@
         // Positionnement de la caméra
         camera.position.z = 5;
       
-        // Contrôles de la souris pour la rotation
+        // Variables pour la gestion de la souris et du clic
+        let isMouseDown = false;
         let mouseX = 0;
         let mouseY = 0;
-        const mouseSpeed = 0.05;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        const mouseSpeed = 0.005;
       
+        // Lorsque la souris est déplacée
         document.addEventListener('mousemove', (event) => {
-          mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-          mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+          if (isMouseDown) {
+            const deltaX = event.clientX - lastMouseX;
+            const deltaY = event.clientY - lastMouseY;
+      
+            cube.rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
+            cube.rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
+          }
+      
+          lastMouseX = event.clientX;
+          lastMouseY = event.clientY;
         });
       
-        // Animation
+        // Quand le clic est maintenu
+        document.addEventListener('mousedown', (event) => {
+          isMouseDown = true;
+          lastMouseX = event.clientX;
+          lastMouseY = event.clientY;
+        });
+      
+        // Quand le clic est relâché
+        document.addEventListener('mouseup', () => {
+          isMouseDown = false;
+        });
+      
+        // Animation de la scène
         function animate() {
           requestAnimationFrame(animate);
-          cube.rotation.x += mouseY * mouseSpeed;
-          cube.rotation.y += mouseX * mouseSpeed;
           renderer.render(scene, camera);
         }
       
