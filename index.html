@@ -22,8 +22,8 @@
     <h2>Trains</h2>
     <!-- Import de Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Import de dat.GUI pour les curseurs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <!-- Import des contrôles OrbitControls.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
 
     <script>
         // Scène, caméra et rendu
@@ -43,34 +43,19 @@
         // Positionner la caméra
         camera.position.z = 5;
 
-        // Contrôles via dat.GUI
-        const gui = new dat.GUI({ autoPlace: false });
-        const guiContainer = document.createElement('div');
-        guiContainer.id = 'gui-container';
-        document.body.appendChild(guiContainer);
-        gui.domElement.style.position = 'absolute';
-        gui.domElement.style.top = '10px';
-        gui.domElement.style.left = '10px';
-        guiContainer.appendChild(gui.domElement);
-
-        const cubeRotation = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-
-        gui.add(cubeRotation, 'x', -Math.PI, Math.PI).name('Rotation X');
-        gui.add(cubeRotation, 'y', -Math.PI, Math.PI).name('Rotation Y');
-        gui.add(cubeRotation, 'z', -Math.PI, Math.PI).name('Rotation Z');
+        // Ajouter les contrôles OrbitControls pour interagir avec la souris
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = true;  // Activer le zoom avec la molette
+        controls.enableDamping = true;  // Activer l'inertie
+        controls.dampingFactor = 0.25;  // Facteur de l'inertie
+        controls.screenSpacePanning = false;  // Désactiver le pan horizontal/vertical de la caméra
 
         // Fonction d'animation
         function animate() {
             requestAnimationFrame(animate);
 
-            // Appliquer les valeurs des curseurs à la rotation du cube
-            cube.rotation.x = cubeRotation.x;
-            cube.rotation.y = cubeRotation.y;
-            cube.rotation.z = cubeRotation.z;
+            // Mettre à jour les contrôles (nécessaire pour l'inertie)
+            controls.update();
 
             // Rendu de la scène
             renderer.render(scene, camera);
