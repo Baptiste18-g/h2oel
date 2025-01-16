@@ -10,18 +10,18 @@ h1 {
   font-weight: bold;
   margin-bottom: 1rem;
   margin-top: 3rem;
-  background: linear-gradient(to bottom right, #00d9ff, #00d9ff, #00FF00);
+  background: linear-gradient(to bottom right, #00d9ff, #00d9ff 25%, #00FF00);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-align: center;
 }
 h2 {
-  background: linear-gradient(to bottom right, #00d9ff, #00d9ff, #00FF00);
+  background: linear-gradient(to bottom right, #00d9ff, #00d9ff 25%, #00FF00);
   -webkit-background-clip: text;
   background-clip: text;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 2em;
   padding: 2em;
 }
 img {
