@@ -22,14 +22,17 @@
     <h2>Trains</h2>
     <!-- Import de Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Import de dat.GUI pour les curseurs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
 
     <script>
         // Scène, caméra et rendu
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({ alpha: true });  // alpha: true pour un fond transparent
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
+        renderer.setClearColor(0x000000, 0); // Arrière-plan transparent
 
         // Création d'un cube 3D
         const geometry = new THREE.BoxGeometry();
@@ -40,13 +43,34 @@
         // Positionner la caméra
         camera.position.z = 5;
 
+        // Contrôles via dat.GUI
+        const gui = new dat.GUI({ autoPlace: false });
+        const guiContainer = document.createElement('div');
+        guiContainer.id = 'gui-container';
+        document.body.appendChild(guiContainer);
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = '10px';
+        gui.domElement.style.left = '10px';
+        guiContainer.appendChild(gui.domElement);
+
+        const cubeRotation = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+
+        gui.add(cubeRotation, 'x', -Math.PI, Math.PI).name('Rotation X');
+        gui.add(cubeRotation, 'y', -Math.PI, Math.PI).name('Rotation Y');
+        gui.add(cubeRotation, 'z', -Math.PI, Math.PI).name('Rotation Z');
+
         // Fonction d'animation
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotation du cube
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
+            // Appliquer les valeurs des curseurs à la rotation du cube
+            cube.rotation.x = cubeRotation.x;
+            cube.rotation.y = cubeRotation.y;
+            cube.rotation.z = cubeRotation.z;
 
             // Rendu de la scène
             renderer.render(scene, camera);
