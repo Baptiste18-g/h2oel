@@ -10,18 +10,21 @@
     <link rel="apple-touch-icon" href="CPKC-Wordmark-PMS200.png">
     <script src="https://kit.fontawesome.com/3979d6d647.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Ajout de OBJLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/OBJLoader.min.js"></script>
 </head>
 <body>
     <header>
         <img src="CPKC-Wordmark-PMS200.png">
     </header>
-    <h1>Everything about the developement of hydrogene trains</h1>
+    <h1>Everything about the development of hydrogen trains</h1>
     <h2>Latest news</h2>
     <div>
 
     </div>
     <h2>Trains</h2>
     <p>CPKC 1200</p>
+    
     <script>
         // Scène, caméra et rendu
         const scene = new THREE.Scene();
@@ -31,12 +34,16 @@
         renderer.setClearColor(0x000000, 0);  // Fond transparent
         document.body.appendChild(renderer.domElement);
       
-        // Création d'un cube
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: false });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-      
+        // Charger le modèle .obj
+        const loader = new THREE.OBJLoader();
+        let model;
+
+        loader.load('tinker.obj', (obj) => {
+            model = obj;
+            scene.add(model);  // Ajouter le modèle à la scène
+            model.position.set(0, 0, 0);  // Position initiale du modèle
+        });
+
         // Positionnement de la caméra
         camera.position.z = 5;
       
@@ -50,12 +57,12 @@
       
         // Lorsque la souris est déplacée
         document.addEventListener('mousemove', (event) => {
-          if (isMouseDown) {
+          if (isMouseDown && model) {
             const deltaX = event.clientX - lastMouseX;
             const deltaY = event.clientY - lastMouseY;
       
-            cube.rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
-            cube.rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
+            model.rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
+            model.rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
           }
       
           lastMouseX = event.clientX;
@@ -89,7 +96,9 @@
           renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
+    
     <footer>
         
     </footer>
 </body>
+</html>
