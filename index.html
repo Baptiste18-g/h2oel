@@ -10,7 +10,8 @@
     <link rel="apple-touch-icon" href="CPKC-Wordmark-PMS200.png">
     <script src="https://kit.fontawesome.com/3979d6d647.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Ajout de OBJLoader -->
+    <!-- Ajout de OBJLoader et MTLLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/MTLLoader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/OBJLoader.min.js"></script>
 </head>
 <body>
@@ -34,14 +35,20 @@
         renderer.setClearColor(0x000000, 0);  // Fond transparent
         document.body.appendChild(renderer.domElement);
       
-        // Charger le modèle .obj
-        const loader = new THREE.OBJLoader();
-        let model;
+        // Charger le fichier .mtl pour les textures
+        const mtlLoader = new THREE.MTLLoader();
+        mtlLoader.load('tinker.mtl', (materials) => {
+            // Appliquer les matériaux (textures)
+            materials.preload();
 
-        loader.load('tinker.obj', (obj) => {
-            model = obj;
-            scene.add(model);  // Ajouter le modèle à la scène
-            model.position.set(0, 0, 0);  // Position initiale du modèle
+            // Charger le fichier .obj en utilisant les matériaux chargés
+            const objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);  // Appliquer les matériaux au modèle
+            objLoader.load('tinker.obj', (obj) => {
+                // Ajouter l'objet à la scène
+                scene.add(obj);
+                obj.position.set(0, 0, 0);  // Position initiale du modèle
+            });
         });
 
         // Positionnement de la caméra
@@ -57,12 +64,14 @@
       
         // Lorsque la souris est déplacée
         document.addEventListener('mousemove', (event) => {
-          if (isMouseDown && model) {
+          if (isMouseDown) {
             const deltaX = event.clientX - lastMouseX;
             const deltaY = event.clientY - lastMouseY;
       
-            model.rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
-            model.rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
+            if (scene.children[0]) { // Si le modèle est chargé
+                scene.children[0].rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
+                scene.children[0].rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
+            }
           }
       
           lastMouseX = event.clientX;
@@ -102,3 +111,4 @@
     </footer>
 </body>
 </html>
+
