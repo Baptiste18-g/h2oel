@@ -10,22 +10,18 @@
     <link rel="apple-touch-icon" href="CPKC-Wordmark-PMS200.png">
     <script src="https://kit.fontawesome.com/3979d6d647.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Ajout de OBJLoader et MTLLoader -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/MTLLoader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/OBJLoader.min.js"></script>
 </head>
 <body>
     <header>
         <img src="CPKC-Wordmark-PMS200.png">
     </header>
-    <h1>Everything about the development of hydrogen trains</h1>
+    <h1>Everything about the developement of hydrogene trains</h1>
     <h2>Latest news</h2>
     <div>
 
     </div>
     <h2>Trains</h2>
     <p>CPKC 1200</p>
-    
     <script>
         // Scène, caméra et rendu
         const scene = new THREE.Scene();
@@ -35,22 +31,12 @@
         renderer.setClearColor(0x000000, 0);  // Fond transparent
         document.body.appendChild(renderer.domElement);
       
-        // Charger le fichier .mtl pour les textures
-        const mtlLoader = new THREE.MTLLoader();
-        mtlLoader.load('tinker.mtl', (materials) => {
-            // Appliquer les matériaux (textures)
-            materials.preload();
-
-            // Charger le fichier .obj en utilisant les matériaux chargés
-            const objLoader = new THREE.OBJLoader();
-            objLoader.setMaterials(materials);  // Appliquer les matériaux au modèle
-            objLoader.load('tinker.obj', (obj) => {
-                // Ajouter l'objet à la scène
-                scene.add(obj);
-                obj.position.set(0, 0, 0);  // Position initiale du modèle
-            });
-        });
-
+        // Création d'un cube
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: false });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+      
         // Positionnement de la caméra
         camera.position.z = 5;
       
@@ -68,10 +54,8 @@
             const deltaX = event.clientX - lastMouseX;
             const deltaY = event.clientY - lastMouseY;
       
-            if (scene.children[0]) { // Si le modèle est chargé
-                scene.children[0].rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
-                scene.children[0].rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
-            }
+            cube.rotation.y += deltaX * mouseSpeed;  // Rotation autour de l'axe Y
+            cube.rotation.x += deltaY * mouseSpeed;  // Rotation autour de l'axe X
           }
       
           lastMouseX = event.clientX;
@@ -105,10 +89,7 @@
           renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
-    
     <footer>
         
     </footer>
 </body>
-</html>
-
